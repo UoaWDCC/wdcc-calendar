@@ -139,6 +139,7 @@ export const events = pgTable("events", {
   endsAt: timestamp("ends_at", { withTimezone: true }).notNull(),
   isMemberOnly: boolean("is_member_only").notNull().default(false),
   qrCodeToken: text("qr_code_token").notNull(),
+  stampPath: text("stamp_path").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
