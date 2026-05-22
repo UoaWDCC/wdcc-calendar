@@ -10,14 +10,13 @@
 
 ## Code Quality
 
-| Command             | Description                  |
-| ------------------- | ---------------------------- |
-| `pnpm lint`         | Check for ESLint issues      |
-| `pnpm lint:fix`     | Auto-fix ESLint issues       |
-| `pnpm format:check` | Check Prettier formatting    |
-| `pnpm format`       | Auto-fix Prettier formatting |
-| `pnpm typecheck`    | Run TypeScript type checking |
-| `pnpm check`        |                              |
+| Command          | Description                  |
+| ---------------- | ---------------------------- |
+| `pnpm lint`      | Check for ESLint issues      |
+| `pnpm lint:fix`  | Auto-fix ESLint issues       |
+| `pnpm format`    | Auto-fix Prettier formatting |
+| `pnpm typecheck` | Run TypeScript type checking |
+| `pnpm check`     | Run TypeScript type checking |
 
 ## Database
 

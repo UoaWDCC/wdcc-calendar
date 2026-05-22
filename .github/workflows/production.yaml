@@ -7,14 +7,16 @@ on:
 
 jobs:
   production:
-    name: Build and Push DB Schema
+    name: Build and Migrate
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -22,8 +24,11 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Build Check
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build
         run: pnpm build
 
-      - name: Run DB Migrations
+      - name: Migrate Database
         run: pnpm db:migrate

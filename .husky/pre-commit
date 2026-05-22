@@ -1,3 +1,20 @@
-npm run format
-npm run lint:fix
-npm run typecheck
+#!/bin/sh
+
+staged_files="$(git diff --cached --name-only --diff-filter=ACMR)"
+
+if [ -n "$staged_files" ]; then
+  git diff --cached --name-only --diff-filter=ACMR -z \
+    | xargs -0 pnpm exec prettier --write --ignore-unknown
+
+  eslint_files="$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(js|jsx|ts|tsx|mjs|cjs)$' || true)"
+  if [ -n "$eslint_files" ]; then
+    printf "%s\n" "$eslint_files" | while IFS= read -r file; do
+      pnpm exec eslint --fix "$file" || exit 1
+    done
+  fi
+
+  git diff --cached --name-only --diff-filter=ACMR -z \
+    | xargs -0 git add
+fi
+
+pnpm typecheck
