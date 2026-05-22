@@ -7,6 +7,20 @@ type AttendanceRequestBody = {
   qrCodeToken?: string;
 };
 
+function isUniqueViolation(error: unknown) {
+  let current: unknown = error;
+
+  while (typeof current === "object" && current !== null) {
+    if ("code" in current && current.code === "23505") {
+      return true;
+    }
+
+    current = "cause" in current ? current.cause : null;
+  }
+
+  return false;
+}
+
 export async function PUT(request: Request) {
   const access = await getCurrentUserAccess();
 
@@ -58,12 +72,7 @@ export async function PUT(request: Request) {
 
     return Response.json({ ok: true }, { status: 201 });
   } catch (error) {
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "code" in error &&
-      error.code === "23505"
-    ) {
+    if (isUniqueViolation(error)) {
       return Response.json(
         { error: "User has already checked in to this event" },
         { status: 409 },
