@@ -1,4 +1,5 @@
 import { eq } from "drizzle-orm";
+import { NextResponse } from "next/server";
 
 import { db, eventAttendance, events } from "@/db";
 import { getCurrentUserAccess } from "@/lib/access";
@@ -11,7 +12,7 @@ export async function PUT(request: Request) {
   const access = await getCurrentUserAccess();
 
   if (access.status === "no_role") {
-    return Response.json({ error: "Unauthorised" }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
   }
 
   let body: AttendanceRequestBody;
@@ -19,11 +20,11 @@ export async function PUT(request: Request) {
   try {
     body = (await request.json()) as AttendanceRequestBody;
   } catch {
-    return Response.json({ error: "Invalid JSON body" }, { status: 400 });
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
   if (typeof body.qrCodeToken !== "string") {
-    return Response.json(
+    return NextResponse.json(
       { error: "QR code token must be a string" },
       { status: 400 },
     );
@@ -32,7 +33,7 @@ export async function PUT(request: Request) {
   const qrCodeToken = body.qrCodeToken.trim();
 
   if (!qrCodeToken) {
-    return Response.json(
+    return NextResponse.json(
       { error: "QR code token is required" },
       { status: 400 },
     );
@@ -46,7 +47,7 @@ export async function PUT(request: Request) {
       .limit(1);
 
     if (!event) {
-      return Response.json({ error: "Event not found" }, { status: 404 });
+      return NextResponse.json({ error: "Event not found" }, { status: 404 });
     }
 
     const inserted = await db
@@ -61,16 +62,16 @@ export async function PUT(request: Request) {
       .returning();
 
     if (inserted.length === 0) {
-      return Response.json(
+      return NextResponse.json(
         { error: "User has already checked in to this event" },
         { status: 409 },
       );
     }
 
-    return Response.json({ ok: true }, { status: 201 });
+    return NextResponse.json({ ok: true }, { status: 201 });
   } catch (error) {
     console.error("Error adding event attendance:", error);
-    return Response.json(
+    return NextResponse.json(
       { error: "Failed to add event attendance" },
       { status: 500 },
     );
