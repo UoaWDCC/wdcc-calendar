@@ -1,3 +1,6 @@
+// Depricated gg's
+
+// Sample stamp
 export async function getStampsForUser(userId: number) {
   return [
     {

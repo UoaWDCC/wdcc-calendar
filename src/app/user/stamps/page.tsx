@@ -1,6 +1,8 @@
 import { getCurrentUserAccess } from "@/lib/access";
-import { getStampsForUser } from "@/lib/stamps";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import StampsGrid from "@/components/user/StampsGrid";
+import StampsSummary from "@/components/user/StampsSummary";
 
 export default async function StampsPage() {
   const access = await getCurrentUserAccess();
@@ -12,18 +14,27 @@ export default async function StampsPage() {
     redirect("/admin");
   }
 
-  const stamps = await getStampsForUser(access.userId);
+  const h = await headers();
+  const cookieHeader = h.get("cookie") ?? "";
 
-  if (stamps.length === 0) {
-    return <p>No stamps yet</p>;
+  const base = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
+  const res = await fetch(`${base}/api/v1/stamps`, {
+    method: "GET",
+    headers: cookieHeader ? { cookie: cookieHeader } : undefined,
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    return <p>Unable to load stamps</p>;
   }
+
+  const { stamps = [] } = await res.json();
 
   return (
     <div>
-      <img
-        src={stamps[0].imageUrl ?? "/test.png"}
-        alt={stamps[0].name ?? "Stamp"}
-      />
+      <h1>Your stamps</h1>
+      <StampsSummary stamps={stamps} />
+      <StampsGrid stamps={stamps} />
     </div>
   );
 }

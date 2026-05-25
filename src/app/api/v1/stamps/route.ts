@@ -16,17 +16,17 @@ export async function GET() {
       .select({
         id: events.id,
         name: events.title,
-        imageUrl: events.stampPath,
         date: events.startsAt,
       })
       .from(eventAttendance)
       .innerJoin(events, eq(eventAttendance.eventId, events.id))
       .where(eq(eventAttendance.userId, access.userId));
 
+    // Convert db input to JSON
     const stamps = rows.map((r) => ({
       id: r.id,
       name: r.name,
-      imageUrl: r.imageUrl ?? null,
+      imageUrl: "/test.png", // Replace this later
       date: r.date?.toISOString(),
     }));
 
