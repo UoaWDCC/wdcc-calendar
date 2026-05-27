@@ -1,3 +1,5 @@
+"use server";
+
 import { eq } from "drizzle-orm";
 
 import { db, eventAttendance, events } from "@/db";
