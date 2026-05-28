@@ -12,13 +12,23 @@ export async function GET() {
   }
 
   try {
-    const stamps = await db
+    const rows = await db
       .select({
-        stampPath: events.stampPath,
+        id: events.id,
+        name: events.title,
+        date: events.startsAt,
       })
       .from(eventAttendance)
       .innerJoin(events, eq(eventAttendance.eventId, events.id))
       .where(eq(eventAttendance.userId, access.userId));
+
+    // Convert db input to JSON
+    const stamps = rows.map((r) => ({
+      id: r.id,
+      name: r.name,
+      imageUrl: "/test.png", // Replace this later
+      date: r.date?.toISOString(),
+    }));
 
     return NextResponse.json({ stamps }, { status: 200 });
   } catch (error) {

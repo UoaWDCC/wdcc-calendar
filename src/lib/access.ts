@@ -45,5 +45,5 @@ export async function getSignedInDestination() {
     return null;
   }
 
-  return access.status === "admin" ? "/admin" : "/user";
+  return access.status === "admin" ? "/admin" : "/user/stamps";
 }
