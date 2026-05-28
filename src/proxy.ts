@@ -21,8 +21,16 @@ export async function proxy(request: NextRequest) {
 
   const role = session.session.role;
 
+  if (role !== "user" && role !== "admin") {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  if (role === "user" && pathname === "/user") {
+    return NextResponse.redirect(new URL("/user/stamps", request.url));
+  }
+
   if (role !== "admin" && matches(pathname, ["/admin"])) {
-    return NextResponse.redirect(new URL("/user", request.url));
+    return NextResponse.redirect(new URL("/user/stamps", request.url));
   }
 
   if (role === "admin" && matches(pathname, ["/user"])) {
