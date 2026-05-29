@@ -1,5 +1,5 @@
 import { getCurrentUserAccess } from "@/lib/access";
-import { getStampsForUser } from "@/server/user/stamps";
+import { getStampsForUser } from "@/server/user/getUserStamps";
 import { redirect } from "next/navigation";
 import StampsGrid from "@/components/user/StampsGrid";
 import StampsSummary from "@/components/user/StampsSummary";
