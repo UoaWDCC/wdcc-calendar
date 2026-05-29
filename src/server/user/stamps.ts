@@ -3,13 +3,7 @@
 import { eq } from "drizzle-orm";
 import { db, eventAttendance, events } from "@/db";
 import type { ServerResponse } from "@/lib/error";
-
-export type Stamp = {
-  id: number;
-  name: string;
-  imageUrl: string;
-  date: string | null;
-};
+import type { Stamp } from "@/lib/stamps";
 
 export async function getStampsForUser(
   userId: number,

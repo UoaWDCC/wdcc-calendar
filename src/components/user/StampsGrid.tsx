@@ -1,8 +1,4 @@
-type Stamp = {
-  id: number;
-  name?: string;
-  imageUrl?: string | null;
-};
+import { Stamp } from "@/lib/stamps";
 
 export default function StampsGrid({ stamps }: { stamps: Stamp[] }) {
   if (stamps.length === 0) {

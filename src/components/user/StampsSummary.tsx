@@ -1,9 +1,4 @@
-type Stamp = {
-  id: number;
-  name?: string;
-  imageUrl?: string | null;
-  date?: string | null;
-};
+import { Stamp } from "@/lib/stamps";
 
 export default function StampsSummary({ stamps }: { stamps: Stamp[] }) {
   const total = stamps.length;
