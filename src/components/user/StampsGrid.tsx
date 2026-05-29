@@ -1,4 +1,4 @@
-import { Stamp } from "@/lib/stamps";
+import { Stamp } from "@/types/stamps/stamps";
 
 export default function StampsGrid({ stamps }: { stamps: Stamp[] }) {
   if (stamps.length === 0) {

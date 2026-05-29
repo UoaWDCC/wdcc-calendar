@@ -2,8 +2,8 @@
 
 import { eq } from "drizzle-orm";
 import { db, eventAttendance, events } from "@/db";
-import type { ServerResponse } from "@/lib/error";
-import type { Stamp } from "@/lib/stamps";
+import type { ServerResponse } from "@/types/errors/serverError";
+import type { Stamp } from "@/types/stamps/stamps";
 
 export async function getStampsForUser(
   userId: number,
