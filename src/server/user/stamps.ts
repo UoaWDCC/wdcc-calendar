@@ -2,6 +2,7 @@
 
 import { eq } from "drizzle-orm";
 import { db, eventAttendance, events } from "@/db";
+import type { ServerResponse } from "@/lib/error";
 
 export type Stamp = {
   id: number;
@@ -10,11 +11,9 @@ export type Stamp = {
   date: string | null;
 };
 
-export type Result<T> = { ok: true; value: T } | { ok: false; error: string };
-
 export async function getStampsForUser(
   userId: number,
-): Promise<Result<Stamp[]>> {
+): Promise<ServerResponse<Stamp[]>> {
   try {
     const rows = await db
       .select({
